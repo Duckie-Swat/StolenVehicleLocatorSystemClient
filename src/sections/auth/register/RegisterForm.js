@@ -25,6 +25,8 @@ export default function RegisterForm() {
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('First name required'),
     lastName: Yup.string().required('Last name required'),
+    dateOfBirth: Yup.string().required('Date of birth required'),
+    phoneNumber: Yup.string().required('Phone number required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
@@ -32,6 +34,8 @@ export default function RegisterForm() {
   const defaultValues = {
     firstName: '',
     lastName: '',
+    dateOfBirth: '',
+    phoneNumber: '',
     email: '',
     password: '',
   };
@@ -69,6 +73,11 @@ export default function RegisterForm() {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField name="firstName" label="First name" />
           <RHFTextField name="lastName" label="Last name" />
+        </Stack>
+
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <RHFTextField name="dateOfBirth" label="Date of birth" type="date" focused color="grey"/>
+          <RHFTextField name="phoneNumber" label="Phone number" />
         </Stack>
 
         <RHFTextField name="email" label="Email address" />

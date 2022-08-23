@@ -14,6 +14,8 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { RegisterForm } from '../../sections/auth/register';
+// image
+import LoginPicture from '../../assets/login_picture.png';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +34,7 @@ const HeaderStyle = styled('header')(({ theme }) => ({
   alignItems: 'center',
   position: 'absolute',
   padding: theme.spacing(3),
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   [theme.breakpoints.up('md')]: {
     alignItems: 'flex-start',
     padding: theme.spacing(7, 5, 0, 7),
@@ -42,6 +44,7 @@ const HeaderStyle = styled('header')(({ theme }) => ({
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
   maxWidth: 464,
+  maxHeight: '95vh',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -71,7 +74,7 @@ export default function Register() {
     <Page title="Register">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          {/* <Logo /> */}
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account?{' '}
@@ -84,14 +87,14 @@ export default function Register() {
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+            {/* <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Manage the job more effectively with Minimal
-            </Typography>
+            </Typography> */}
             <Image
               visibleByDefault
               disabledEffect
               alt="register"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_register.png"
+              src={LoginPicture}
             />
           </SectionStyle>
         )}
@@ -101,9 +104,9 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Get started absolutely free.
+                  Get started absolutely free
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Free forever. No credit card needed.</Typography>
+                {/* <Typography sx={{ color: 'text.secondary' }}>Free forever. No credit card needed.</Typography> */}
               </Box>
               <Tooltip title={capitalCase(method)}>
                 <>
@@ -118,7 +121,7 @@ export default function Register() {
 
             <RegisterForm />
 
-            <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+            {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By registering, I agree to Minimal&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
@@ -128,7 +131,7 @@ export default function Register() {
                 Privacy Policy
               </Link>
               .
-            </Typography>
+            </Typography> */}
 
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>

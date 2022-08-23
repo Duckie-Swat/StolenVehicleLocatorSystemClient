@@ -14,6 +14,8 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
+// image
+import LoginPicture from '../../assets/login_picture.png';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +34,7 @@ const HeaderStyle = styled('header')(({ theme }) => ({
   alignItems: 'center',
   position: 'absolute',
   padding: theme.spacing(3),
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   [theme.breakpoints.up('md')]: {
     alignItems: 'flex-start',
     padding: theme.spacing(7, 5, 0, 7),
@@ -42,6 +44,7 @@ const HeaderStyle = styled('header')(({ theme }) => ({
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
   maxWidth: 464,
+  maxHeight: '95vh',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -71,7 +74,7 @@ export default function Login() {
     <Page title="Login">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          {/* <Logo /> */}
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Don’t have an account? {''}
@@ -84,14 +87,14 @@ export default function Login() {
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+            {/* <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
-            </Typography>
+            </Typography> */}
             <Image
               visibleByDefault
               disabledEffect
               alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+              src={LoginPicture}
             />
           </SectionStyle>
         )}
@@ -101,7 +104,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
+                  Sign in to Stolen Vehicle Locator System
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
               </Box>
@@ -117,9 +120,9 @@ export default function Login() {
               </Tooltip>
             </Stack>
 
-            <Alert severity="info" sx={{ mb: 3 }}>
+            {/* <Alert severity="info" sx={{ mb: 3 }}>
               Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert>
+            </Alert> */}
 
             <LoginForm />
 
