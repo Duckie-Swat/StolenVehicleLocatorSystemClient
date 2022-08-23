@@ -5,6 +5,7 @@ import axios from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
 
 // ----------------------------------------------------------------------
+import { LOGIN_ENDPOINT, MY_PROFILE_ENDPOINT } from '../constants/apiEndpointConstants';
 
 const initialState = {
   isAuthenticated: false,
@@ -74,7 +75,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
+          const response = await axios.get(MY_PROFILE_ENDPOINT);
           const { user } = response.data;
 
           dispatch({
@@ -109,7 +110,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post(LOGIN_ENDPOINT, {
       email,
       password,
     });

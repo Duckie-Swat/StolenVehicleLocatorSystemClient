@@ -20,7 +20,6 @@ import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hoo
 
 export default function LoginForm() {
   const { login } = useAuth();
-
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
