@@ -21,12 +21,16 @@ const initialState = {
   activeConversationId: null,
   participants: [],
   recipients: [],
+  connection: null,
 };
 
 const slice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    setConnection(state, action) {
+      state.connection = action.payload;
+    },
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
@@ -116,7 +120,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-export const { addRecipients, onSendMessage, resetActiveConversation } = slice.actions;
+export const { addRecipients, onSendMessage, resetActiveConversation, setConnection } = slice.actions;
 
 // ----------------------------------------------------------------------
 
