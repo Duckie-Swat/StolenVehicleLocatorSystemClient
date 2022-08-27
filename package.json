@@ -49,6 +49,7 @@
     "@fullcalendar/timeline": "^5.10.1",
     "@hookform/resolvers": "^2.8.8",
     "@iconify/react": "^3.1.4",
+    "@microsoft/signalr": "^6.0.8",
     "@mui/lab": "^5.0.0-alpha.72",
     "@mui/material": "^5.5.0",
     "@mui/x-data-grid": "^5.6.1",
