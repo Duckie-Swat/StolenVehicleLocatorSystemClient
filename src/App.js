@@ -52,22 +52,21 @@ export default function App() {
   }, [isAuthenticated, dispatch]);
 
   useEffect(() => {
-    
     // handle recv message from signalR server
     const handleNotification = (message) => {
       console.log(message);
     };
     notificationConnection?.on('SendNotification', handleNotification);
 
-    // This code used for demo. a notication  will have invoked (sent) to signalR server each 5 minute 
+    // This code used for demo. a notication  will have invoked (sent) to signalR server each 5 minute
     const timer = setInterval(() => {
       notificationConnection?.invoke('Send', {
         To: 'customer@duckieswat.com',
         Content: {
-          Title: "This is notifacition sent from admin",
-          Description: "hola",
-          Type: 0
-        }
+          Title: 'This is notifacition sent from admin',
+          Description: 'hola',
+          Type: 0,
+        },
       });
     }, 60000 * 5);
 
