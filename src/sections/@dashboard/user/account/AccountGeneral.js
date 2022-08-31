@@ -7,11 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Box, Grid, Card, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import Swal from 'sweetalert2';
+
 // hooks
 import useAuth from '../../../../hooks/useAuth';
 // utils
 import { fData } from '../../../../utils/formatNumber';
-// _mock
+
+import axios from '../../../../utils/axios';
+import { MY_PROFILE_ENDPOINT } from '../../../../constants/apiEndpointConstants';
 
 // components
 import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
@@ -50,10 +54,17 @@ export default function AccountGeneral() {
 
   const onSubmit = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await axios.put(MY_PROFILE_ENDPOINT, methods.getValues());
       enqueueSnackbar('Update success!');
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: error?.message || 'Update failed!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
