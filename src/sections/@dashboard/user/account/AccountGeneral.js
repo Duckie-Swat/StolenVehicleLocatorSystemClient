@@ -18,7 +18,7 @@ import axios from '../../../../utils/axios';
 import { MY_PROFILE_ENDPOINT } from '../../../../constants/apiEndpointConstants';
 
 // components
-import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
+import { FormProvider, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
