@@ -118,7 +118,7 @@ export default function UserList() {
   };
 
   const handleEditRow = (id) => {
-    navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
+    navigate(PATH_DASHBOARD.camera.edit(paramCase(id)));
   };
 
   const dataFiltered = applySortFilter({
@@ -137,20 +137,20 @@ export default function UserList() {
     (!dataFiltered.length && !!filterStatus);
 
   return (
-    <Page title="User: List">
+    <Page title="My cameras: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="User List"
+          heading="My cameras"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
+            { name: 'User', href: PATH_DASHBOARD.camera.root },
             { name: 'List' },
           ]}
           action={
             <Button
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.new}
+              to={PATH_DASHBOARD.camera.new}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
               New User
