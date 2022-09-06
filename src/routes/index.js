@@ -86,9 +86,21 @@ export default function Router() {
             { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
             { path: 'profile', element: <UserProfile /> },
             { path: 'cards', element: <UserCards /> },
-            { path: 'list', element: <UserList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: ':name/edit', element: <UserCreate /> },
+            { path: 'list', element: <CameraList /> },
+            { path: 'new', element: <CameraCreate /> },
+            { path: ':name/edit', element: <CameraCreate /> },
+            { path: 'account', element: <UserAccount /> },
+          ],
+        },
+        {
+          path: 'camera',
+          children: [
+            { element: <Navigate to="/dashboard/camera/profile" replace />, index: true },
+            { path: 'profile', element: <UserProfile /> },
+            { path: 'cards', element: <UserCards /> },
+            { path: 'list', element: <CameraList /> },
+            { path: 'new', element: <CameraCreate /> },
+            { path: ':name/edit', element: <CameraCreate /> },
             { path: 'account', element: <UserAccount /> },
           ],
         },
@@ -141,8 +153,8 @@ export default function Router() {
       children: [
         { path: 'coming-soon', element: <ComingSoon /> },
         { path: 'maintenance', element: <Maintenance /> },
-        { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
+        // { path: 'pricing', element: <Pricing /> },
+        // { path: 'payment', element: <Payment /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
@@ -150,13 +162,7 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <MainLayout />,
-      children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-      ],
+      element: <Navigate to="/dashboard" replace />,
     },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
@@ -198,9 +204,9 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 // USER
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
-const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
+const CameraList = Loadable(lazy(() => import('../pages/dashboard/CameraList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
-const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
+const CameraCreate = Loadable(lazy(() => import('../pages/dashboard/CameraCreate')));
 
 // APP
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
