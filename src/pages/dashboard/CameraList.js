@@ -1,6 +1,8 @@
 import { paramCase } from 'change-case';
-import { useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect, useState, useCallback } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import {
   Box,
@@ -34,71 +36,72 @@ import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
-import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/list';
-
+import { CameraTableToolbar, CameraTableRow } from '../../sections/@dashboard/camera/list';
 // ----------------------------------------------------------------------
-
-const STATUS_OPTIONS = ['all', 'active', 'banned'];
-
-const ROLE_OPTIONS = [
-  'all',
-  'ux designer',
-  'full stack designer',
-  'backend developer',
-  'project manager',
-  'leader',
-  'ui designer',
-  'ui/ux designer',
-  'front end developer',
-  'full stack developer',
-];
+import { getCameras, setPage, setLimit, setKeyword, setOrderDesc, setOrderProperty } from '../../redux/slices/camera';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
-  { id: 'company', label: 'Company', align: 'left' },
-  { id: 'role', label: 'Role', align: 'left' },
-  { id: 'isVerified', label: 'Verified', align: 'center' },
+  { id: 'createdAt', label: 'Created At', align: 'left' },
+  { id: 'lastUpdatedAt', label: 'Last Updated At', align: 'left' },
   { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
 
-export default function UserList() {
+export default function CameraList() {
   const {
     dense,
-    page,
-    order,
-    orderBy,
-    rowsPerPage,
-    setPage,
     //
     selected,
     setSelected,
     onSelectRow,
     onSelectAllRows,
     //
-    onSort,
     onChangeDense,
-    onChangePage,
-    onChangeRowsPerPage,
   } = useTable();
 
   const { themeStretch } = useSettings();
 
+  const { cameras, page, limit, keyword, orderProperty, desc, totalItems } = useSelector((state) => state.camera);
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const [tableData, setTableData] = useState(_userList);
-
-  const [filterName, setFilterName] = useState('');
+  const [tableData, setTableData] = useState([]);
 
   const [filterRole, setFilterRole] = useState('all');
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
-  const handleFilterName = (filterName) => {
-    setFilterName(filterName);
-    setPage(0);
+  const onSort = (id) => {
+    const isAsc = orderProperty === id && desc === false;
+    if (id !== '') {
+      dispatch(setOrderDesc(isAsc));
+      dispatch(setOrderProperty(id));
+    }
+  };
+
+  const debounceSearch = useCallback(
+    debounce((query) => {
+      dispatch(
+        getCameras({
+          page,
+          limit,
+          keyword: query,
+          orderProperty,
+          desc,
+        })
+      );
+    }, 1000),
+    []
+  );
+
+  const handleSearch = (query) => {
+    dispatch(setKeyword(query));
+    debounceSearch(query);
   };
 
   const handleFilterRole = (event) => {
@@ -121,29 +124,42 @@ export default function UserList() {
     navigate(PATH_DASHBOARD.camera.edit(paramCase(id)));
   };
 
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterRole,
-    filterStatus,
-  });
+  const onChangeRowsPerPage = (event) => {
+    dispatch(setLimit(parseInt(event.target.value, 10)));
+  };
 
   const denseHeight = dense ? 52 : 72;
 
-  const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
-    (!dataFiltered.length && !!filterStatus);
+  const onPageChange = (event, newPage) => {
+    dispatch(setPage(newPage + 1));
+  };
+
+  useEffect(() => {
+    dispatch(
+      getCameras({
+        page,
+        limit,
+        keyword,
+        orderProperty,
+        desc,
+      })
+    );
+  }, [dispatch, limit, page, orderProperty, desc]);
+
+  useEffect(() => {
+    if (cameras) {
+      setTableData(cameras);
+    }
+  }, [cameras]);
 
   return (
-    <Page title="My cameras: List">
+    <Page title="Camera: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="My cameras"
+          heading="Camera List"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.camera.root },
+            { name: 'Camera', href: PATH_DASHBOARD.camera.root },
             { name: 'List' },
           ]}
           action={
@@ -153,13 +169,13 @@ export default function UserList() {
               to={PATH_DASHBOARD.camera.new}
               startIcon={<Iconify icon={'eva:plus-fill'} />}
             >
-              New User
+              New Camera
             </Button>
           }
         />
 
         <Card>
-          <Tabs
+          {/* <Tabs
             allowScrollButtonsMobile
             variant="scrollable"
             scrollButtons="auto"
@@ -170,16 +186,15 @@ export default function UserList() {
             {STATUS_OPTIONS.map((tab) => (
               <Tab disableRipple key={tab} label={tab} value={tab} />
             ))}
-          </Tabs>
+          </Tabs> */}
 
           <Divider />
 
-          <UserTableToolbar
-            filterName={filterName}
+          <CameraTableToolbar
+            filterName={keyword}
             filterRole={filterRole}
-            onFilterName={handleFilterName}
+            onFilterName={handleSearch}
             onFilterRole={handleFilterRole}
-            optionsRole={ROLE_OPTIONS}
           />
 
           <Scrollbar>
@@ -207,8 +222,8 @@ export default function UserList() {
 
               <Table size={dense ? 'small' : 'medium'}>
                 <TableHeadCustom
-                  order={order}
-                  orderBy={orderBy}
+                  order={desc ? 'desc' : 'asc'}
+                  orderBy={orderProperty}
                   headLabel={TABLE_HEAD}
                   rowCount={tableData.length}
                   numSelected={selected.length}
@@ -222,8 +237,8 @@ export default function UserList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <UserTableRow
+                  {tableData.map((row) => (
+                    <CameraTableRow
                       key={row.id}
                       row={row}
                       selected={selected.includes(row.id)}
@@ -233,9 +248,9 @@ export default function UserList() {
                     />
                   ))}
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page - 1, limit, tableData.length)} />
 
-                  <TableNoData isNotFound={isNotFound} />
+                  {/* <TableNoData isNotFound={isNotFound} /> */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -243,12 +258,12 @@ export default function UserList() {
 
           <Box sx={{ position: 'relative' }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[5, 10, 20]}
               component="div"
-              count={dataFiltered.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onChangePage}
+              count={totalItems}
+              rowsPerPage={limit}
+              page={page - 1}
+              onPageChange={onPageChange}
               onRowsPerPageChange={onChangeRowsPerPage}
             />
 
@@ -262,32 +277,4 @@ export default function UserList() {
       </Container>
     </Page>
   );
-}
-
-// ----------------------------------------------------------------------
-
-function applySortFilter({ tableData, comparator, filterName, filterStatus, filterRole }) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
-  }
-
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
-
-  if (filterRole !== 'all') {
-    tableData = tableData.filter((item) => item.role === filterRole);
-  }
-
-  return tableData;
 }

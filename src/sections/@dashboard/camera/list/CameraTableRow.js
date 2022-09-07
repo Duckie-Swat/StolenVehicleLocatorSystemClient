@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
+import { Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
+import { fDateTime } from '../../../../utils/formatTime';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
@@ -10,7 +11,7 @@ import { TableMoreMenu } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-UserTableRow.propTypes = {
+CameraTableRow.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
@@ -18,10 +19,10 @@ UserTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
 };
 
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+export default function CameraTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, avatarUrl, company, role, isVerified, status } = row;
+  const { name, createdAt, lastUpdatedAt, status } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -40,19 +41,16 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>
       </TableCell>
 
-      <TableCell align="left">{company}</TableCell>
+      <TableCell align="left">{fDateTime(createdAt)}</TableCell>
 
-      <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {role}
-      </TableCell>
+      <TableCell align="left">{fDateTime(lastUpdatedAt)}</TableCell>
 
-      <TableCell align="center">
+      {/* <TableCell align="center">
         <Iconify
           icon={isVerified ? 'eva:checkmark-circle-fill' : 'eva:clock-outline'}
           sx={{
@@ -62,7 +60,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             ...(!isVerified && { color: 'warning.main' }),
           }}
         />
-      </TableCell>
+      </TableCell> */}
 
       <TableCell align="left">
         <Label

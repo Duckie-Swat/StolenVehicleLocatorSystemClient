@@ -19,7 +19,7 @@ import {
   AccountSocialLinks,
   AccountNotifications,
   AccountChangePassword,
-} from '../../sections/@dashboard/user/account';
+} from '../../sections/@dashboard/camera/account';
 
 // ----------------------------------------------------------------------
 
