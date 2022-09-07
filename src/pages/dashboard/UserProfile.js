@@ -22,7 +22,7 @@ import {
   ProfileFriends,
   ProfileGallery,
   ProfileFollowers,
-} from '../../sections/@dashboard/user/profile';
+} from '../../sections/@dashboard/camera/profile';
 
 // ----------------------------------------------------------------------
 

@@ -12,11 +12,11 @@ import { _userList } from '../../_mock';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
-import UserNewEditForm from '../../sections/@dashboard/user/UserNewEditForm';
+import CameraNewEditForm from '../../sections/@dashboard/camera/CameraNewEditForm';
 
 // ----------------------------------------------------------------------
 
-export default function UserCreate() {
+export default function CameraCreate() {
   const { themeStretch } = useSettings();
 
   const { pathname } = useLocation();
@@ -25,21 +25,21 @@ export default function UserCreate() {
 
   const isEdit = pathname.includes('edit');
 
-  const currentUser = _userList.find((user) => paramCase(user.name) === name);
+  const currentCamera = _userList.find((camera) => paramCase(camera.name) === name);
 
   return (
-    <Page title="User: Create a new user">
+    <Page title="camera: Create a new camera">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? 'Create a new user' : 'Edit user'}
+          heading={!isEdit ? 'Create a new camera' : 'Edit camera'}
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.camera.list },
-            { name: !isEdit ? 'New user' : capitalCase(name) },
+            { name: 'camera', href: PATH_DASHBOARD.camera.list },
+            { name: !isEdit ? 'New camera' : capitalCase(name) },
           ]}
         />
 
-        <UserNewEditForm isEdit={isEdit} currentUser={currentUser} />
+        <CameraNewEditForm isEdit={isEdit} currentCamera={currentCamera} />
       </Container>
     </Page>
   );

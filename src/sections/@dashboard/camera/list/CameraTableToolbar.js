@@ -5,7 +5,7 @@ import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-UserTableToolbar.propTypes = {
+CameraTableToolbar.propTypes = {
   filterName: PropTypes.string,
   filterRole: PropTypes.string,
   onFilterName: PropTypes.func,
@@ -13,10 +13,10 @@ UserTableToolbar.propTypes = {
   optionsRole: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default function UserTableToolbar({ filterName, filterRole, onFilterName, onFilterRole, optionsRole }) {
+export default function CameraTableToolbar({ filterName, filterRole, onFilterName, onFilterRole, optionsRole }) {
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
-      <TextField
+      {/* <TextField
         fullWidth
         select
         label="Role"
@@ -47,13 +47,13 @@ export default function UserTableToolbar({ filterName, filterRole, onFilterName,
             {option}
           </MenuItem>
         ))}
-      </TextField>
+      </TextField> */}
 
       <TextField
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search user..."
+        placeholder="Search camera..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -10,7 +10,7 @@ import { _userCards } from '../../_mock';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
-import { UserCard } from '../../sections/@dashboard/user/cards';
+import { UserCard } from '../../sections/@dashboard/camera/cards';
 
 // ----------------------------------------------------------------------
 
