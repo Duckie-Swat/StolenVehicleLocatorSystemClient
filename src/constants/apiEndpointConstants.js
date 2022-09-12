@@ -8,3 +8,6 @@ export const LOGOUT_ENDPOINT = '/api/v1/auth/my-account/logout';
 // Camera
 export const LIST_PAGINATED_MY_CAMERAS_ENDPOINT = '/api/v1/users/my-account/cameras/find';
 export const CAMERA_ENDPOINT = '/api/v1/cameras';
+
+// Notification
+export const LIST_PAGINATED_MY_NOTIFICATIONS_ENDPOINT = '/api/v1/users/my-account/notifications/find';
