@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
 import {
   Box,
@@ -16,6 +16,7 @@ import {
   ListItemAvatar,
   ListItemButton,
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // _mock_
@@ -25,12 +26,20 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
+import { getNotifications } from '../../../redux/slices/notification';
 
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
   const [notifications, setNotifications] = useState(_notifications);
-
+  const dispatch = useDispatch();
+  const {
+    notifications: notificationsList,
+    page,
+    limit,
+    orderProperty,
+    desc,
+  } = useSelector((state) => state.notification);
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
@@ -51,6 +60,19 @@ export default function NotificationsPopover() {
       }))
     );
   };
+
+  useEffect(() => {
+    dispatch(
+      getNotifications({
+        page,
+        limit,
+        orderProperty,
+        desc,
+      })
+    );
+  }, []);
+
+  console.log(notificationsList);
 
   return (
     <>
@@ -94,12 +116,15 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
+            {/* {notifications.slice(0, 2).map((notification) => (
+              <NotificationItem key={notification.id} notification={notification} />
+            ))} */}
+            {notificationsList.map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
 
-          <List
+          {/* <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
@@ -110,7 +135,7 @@ export default function NotificationsPopover() {
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -129,7 +154,7 @@ export default function NotificationsPopover() {
 
 NotificationItem.propTypes = {
   notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
+    createdAt: PropTypes.instanceOf(Date) || PropTypes.string,
     id: PropTypes.string,
     isUnRead: PropTypes.bool,
     title: PropTypes.string,
@@ -151,6 +176,9 @@ function NotificationItem({ notification }) {
         ...(notification.isUnRead && {
           bgcolor: 'action.selected',
         }),
+      }}
+      onClick={() => {
+        console.log(`click mask notification item::${notification.id}`);
       }}
     >
       <ListItemAvatar>
