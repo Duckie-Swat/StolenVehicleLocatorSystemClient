@@ -43,7 +43,7 @@ const navConfig = [
   {
     subheader: 'management',
     items: [
-      // USER
+      // CAMERAS
       {
         title: 'My Cameras',
         path: PATH_DASHBOARD.camera.root,
@@ -58,18 +58,15 @@ const navConfig = [
         ],
       },
 
-      // E-COMMERCE
+      // Lost Vehicle Request
       {
-        title: 'e-commerce',
-        path: PATH_DASHBOARD.eCommerce.root,
+        title: 'My Lost Vehicles',
+        path: PATH_DASHBOARD.myLostVehicles.root,
         icon: ICONS.cart,
         children: [
-          { title: 'shop', path: PATH_DASHBOARD.eCommerce.shop },
-          { title: 'product', path: PATH_DASHBOARD.eCommerce.demoView },
-          { title: 'list', path: PATH_DASHBOARD.eCommerce.list },
-          { title: 'create', path: PATH_DASHBOARD.eCommerce.new },
-          { title: 'edit', path: PATH_DASHBOARD.eCommerce.demoEdit },
-          { title: 'checkout', path: PATH_DASHBOARD.eCommerce.checkout },
+          { title: 'list', path: PATH_DASHBOARD.myLostVehicles.list },
+          { title: 'create', path: PATH_DASHBOARD.myLostVehicles.new },
+          // { title: 'edit', path: PATH_DASHBOARD.myLostVehicles.edit },
         ],
       },
 
