@@ -9,6 +9,7 @@ import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import notificationReducer from './slices/notification';
 import cameraReducer from './slices/camera';
+import lostVehicleRequestReducer from './slices/lostVehicleRequest';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer),
   notification: notificationReducer,
   camera: cameraReducer,
+  lostVehicleRequest: lostVehicleRequestReducer,
 });
 
 export { rootPersistConfig, rootReducer };

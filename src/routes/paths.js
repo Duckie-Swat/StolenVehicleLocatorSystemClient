@@ -99,6 +99,12 @@ export const PATH_DASHBOARD = {
     edit: (name) => path(ROOTS_DASHBOARD, `/camera/${name}/edit`),
     demoEdit: path(ROOTS_DASHBOARD, `/camera/reece-chung/edit`),
   },
+  myLostVehicles: {
+    root: path(ROOTS_DASHBOARD, '/my-lost-vehicles'),
+    list: path(ROOTS_DASHBOARD, '/my-lost-vehicles/list'),
+    new: path(ROOTS_DASHBOARD, '/my-lost-vehicles/new'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/my-lost-vehicles/${name}/edit`),
+  },
 };
 
 export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';

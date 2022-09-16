@@ -154,12 +154,12 @@ export default function NotificationsPopover() {
 
 NotificationItem.propTypes = {
   notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date) || PropTypes.string,
+    createdAt: PropTypes.string,
     id: PropTypes.string,
     isUnRead: PropTypes.bool,
     title: PropTypes.string,
     description: PropTypes.string,
-    type: PropTypes.string,
+    type: PropTypes.number,
     avatar: PropTypes.any,
   }),
 };

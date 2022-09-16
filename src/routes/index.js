@@ -105,6 +105,15 @@ export default function Router() {
           ],
         },
         {
+          path: 'my-lost-vehicles',
+          children: [
+            { element: <Navigate to="/dashboard/my-lost-vehicles/list" replace />, index: true },
+            { path: 'list', element: <CameraList /> },
+            { path: 'new', element: <CreateLostVehicleRequest /> },
+            { path: ':name/edit', element: <CreateLostVehicleRequest /> },
+          ],
+        },
+        {
           path: 'invoice',
           children: [
             { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
@@ -225,3 +234,6 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+
+// LOST VEHICLE REQUEST
+const CreateLostVehicleRequest = Loadable(lazy(() => import('../pages/dashboard/MyLostVehicleRequestCreate')));
