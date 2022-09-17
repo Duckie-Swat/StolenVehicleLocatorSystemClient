@@ -7,9 +7,12 @@ import { useForm } from 'react-hook-form';
 import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
+import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import { FORGOT_PASSWORD_ENDPOINT } from '../../../constants/apiEndpointConstants';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +23,7 @@ ResetPasswordForm.propTypes = {
 
 export default function ResetPasswordForm({ onSent, onGetEmail }) {
   const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
 
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -39,11 +43,13 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (isMountedRef.current) {
+        await axios.post(FORGOT_PASSWORD_ENDPOINT, methods.getValues());
         onSent();
         onGetEmail(data.email);
       }
     } catch (error) {
       console.error(error);
+      enqueueSnackbar('Reset password failed', { variant: 'error' });
     }
   };
 
