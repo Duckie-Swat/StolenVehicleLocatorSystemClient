@@ -105,6 +105,9 @@ export const PATH_DASHBOARD = {
     new: path(ROOTS_DASHBOARD, '/my-lost-vehicles/new'),
     edit: (name) => path(ROOTS_DASHBOARD, `/my-lost-vehicles/${name}/edit`),
   },
+  myReports: {
+    root: path(ROOTS_DASHBOARD, '/my-reports'),
+  },
 };
 
 export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';
