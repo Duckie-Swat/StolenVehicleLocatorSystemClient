@@ -108,50 +108,11 @@ export default function Router() {
           path: 'my-lost-vehicles',
           children: [
             { element: <Navigate to="/dashboard/my-lost-vehicles/list" replace />, index: true },
-            { path: 'list', element: <CameraList /> },
+            { path: 'list', element: <LostVehicleRequestList /> },
             { path: 'new', element: <CreateLostVehicleRequest /> },
             { path: ':name/edit', element: <CreateLostVehicleRequest /> },
           ],
         },
-        {
-          path: 'invoice',
-          children: [
-            { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
-            { path: 'list', element: <InvoiceList /> },
-            { path: ':id', element: <InvoiceDetails /> },
-            { path: ':id/edit', element: <InvoiceEdit /> },
-            { path: 'new', element: <InvoiceCreate /> },
-          ],
-        },
-        {
-          path: 'blog',
-          children: [
-            { element: <Navigate to="/dashboard/blog/posts" replace />, index: true },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
-            { path: 'new', element: <BlogNewPost /> },
-          ],
-        },
-        {
-          path: 'mail',
-          children: [
-            { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> },
-          ],
-        },
-        {
-          path: 'chat',
-          children: [
-            { element: <Chat />, index: true },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> },
-          ],
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> },
       ],
     },
 
@@ -237,3 +198,4 @@ const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 
 // LOST VEHICLE REQUEST
 const CreateLostVehicleRequest = Loadable(lazy(() => import('../pages/dashboard/MyLostVehicleRequestCreate')));
+const LostVehicleRequestList = Loadable(lazy(() => import('../pages/dashboard/MyLostVehicleRequestList')));
