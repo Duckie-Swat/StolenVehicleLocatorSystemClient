@@ -23,19 +23,19 @@ const MENU_OPTIONS = [
   },
   {
     label: 'My Profile',
-    linkTo: PATH_DASHBOARD.camera.profile,
+    linkTo: PATH_DASHBOARD.user.profile,
   },
-  {
-    label: 'Settings',
-    linkTo: PATH_DASHBOARD.camera.account,
-  },
+  // {
+  //   label: 'Settings',
+  //   linkTo: PATH_DASHBOARD.camera.account,
+  // },
   {
     label: 'My Cameras',
-    linkTo: '#camera',
+    linkTo: PATH_DASHBOARD.camera.list,
   },
   {
     label: 'My Reports',
-    linkTo: '#reports',
+    linkTo: PATH_DASHBOARD.myReports.root,
   },
 ];
 
