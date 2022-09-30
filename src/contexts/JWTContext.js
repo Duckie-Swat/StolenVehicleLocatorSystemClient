@@ -114,10 +114,11 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, token) => {
     const response = await axios.post(LOGIN_ENDPOINT, {
       email,
       password,
+      responseCaptchaToken: token,
     });
     const { accessToken, user, refreshToken } = response.data;
     setSession(accessToken);
@@ -130,12 +131,13 @@ function AuthProvider({ children }) {
     });
   };
 
-  const register = async (email, password, firstName, lastName) => {
+  const register = async (email, password, firstName, lastName, token) => {
     const response = await axios.post(REGISTER_ENDPOINT, {
       email,
       password,
       firstName,
       lastName,
+      responseCaptchaToken: token,
     });
     const { accessToken, user, refreshToken } = response.data;
     setSession(accessToken);

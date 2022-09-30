@@ -1,23 +1,25 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Stack, IconButton, InputAdornment, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import ReCaptcha from 'react-google-recaptcha';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import { GOOGLE_RECAPTCHA_SITE_KEY } from '../../../config';
 
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const { register } = useAuth();
-
+  const captchaRef = useRef(null);
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -34,6 +36,7 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     password: '',
+    token: '',
   };
 
   const methods = useForm({
@@ -51,7 +54,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     try {
-      await register(data.email, data.password, data.firstName, data.lastName);
+      await register(data.email, data.password, data.firstName, data.lastName, data.token);
     } catch (error) {
       console.error(error);
       reset();
@@ -59,6 +62,7 @@ export default function RegisterForm() {
         setError('afterSubmit', { ...error, message: error.message });
       }
     }
+    captchaRef.current.reset();
   };
 
   return (
@@ -87,8 +91,25 @@ export default function RegisterForm() {
             ),
           }}
         />
-
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+        <ReCaptcha
+          sitekey={GOOGLE_RECAPTCHA_SITE_KEY}
+          ref={captchaRef}
+          onChange={() => {
+            const token = captchaRef.current.getValue();
+            methods.setValue('token', token);
+          }}
+        />
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+          onClick={() => {
+            if (captchaRef.current.getValue() === '') alert('Please verify that you are not a robot');
+            else return handleSubmit(onSubmit);
+          }}
+        >
           Register
         </LoadingButton>
       </Stack>
