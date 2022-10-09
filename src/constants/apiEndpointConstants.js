@@ -16,3 +16,6 @@ export const LIST_PAGINATED_MY_NOTIFICATIONS_ENDPOINT = '/api/v1/users/my-accoun
 // LostVehicleRequest
 export const LIST_PAGINATED_MY_LOST_VEHICLE_REQUESTS_ENDPOINT = '/api/v1/users/my-account/lost-vehicle-requests/find';
 export const LOST_VEHICLE_REQUEST_ENDPOINT = '/api/v1/lost-vehicle-requests';
+
+// CameraDetectResult
+export const LIST_PAGINATED_MY_CAMERA_DETECT_RESULTS_ENDPOINT = '/api/v1/users/my-account/camera-detected-results/find';
