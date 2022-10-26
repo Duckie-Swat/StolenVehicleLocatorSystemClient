@@ -72,8 +72,6 @@ export default function NotificationsPopover() {
     );
   }, []);
 
-  console.log(notificationsList);
-
   return (
     <>
       <IconButtonAnimate color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
@@ -119,9 +117,10 @@ export default function NotificationsPopover() {
             {/* {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))} */}
-            {notificationsList.map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
+            {notificationsList &&
+              notificationsList?.map((notification) => (
+                <NotificationItem key={notification.id} notification={notification} />
+              ))}
           </List>
 
           {/* <List

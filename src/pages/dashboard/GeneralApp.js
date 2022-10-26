@@ -8,7 +8,6 @@ import ReactMapGL from 'react-map-gl';
 import { useDispatch, useSelector } from 'react-redux';
 
 // hooks
-import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';

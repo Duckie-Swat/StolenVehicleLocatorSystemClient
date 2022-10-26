@@ -3,8 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography } from '@mui/material';
-// hooks
-import { useSnackbar } from 'notistack';
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
