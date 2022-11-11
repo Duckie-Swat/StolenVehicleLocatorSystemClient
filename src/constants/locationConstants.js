@@ -43,5 +43,21 @@ const locationConstants = [
     name: 'Q12',
     label: 'Quận 12',
   },
+  {
+    name: 'Quận Tân Phú',
+    label: 'Quận Tân Phú',
+  },
+  {
+    name: 'Quận Bình Tân',
+    label: 'Quận Bình Tân',
+  },
+  {
+    name: 'Quận Bình Thạnh',
+    label: 'Quận Bình Thạnh',
+  },
+  {
+    name: 'Quận Gò Vấp',
+    label: 'Quận Gò Vấp',
+  },
 ];
 export default locationConstants;
