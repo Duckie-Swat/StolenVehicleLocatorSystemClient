@@ -23,7 +23,12 @@ const AppMarkerList = ({ cameraDetectResults }) => {
             <div className="card">
               <Label>Plate Number</Label>
               <p>{cameraDetectResult.plateNumber}</p>
-              <Image src={cameraDetectResult.photo} alt="" style={{ width: '50px' }} />
+
+              <Image
+                src={`data:image/png;base64, ${cameraDetectResult.photo}`}
+                alt="base64 img"
+                style={{ width: '150px' }}
+              />
               <Label>Time</Label>
               <p>{fDateTimeSuffix(cameraDetectResult.createdAt)}</p>
             </div>
