@@ -3,12 +3,16 @@ import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import axios from '../../../../utils/axios';
 import { fDateTime } from '../../../../utils/formatTime';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 import lostVehicleRequestStatusConstants from '../../../../constants/lostVehicleRequestStatusConstants';
+import { markLostVehicleRequestStatus } from '../../../../redux/slices/lostVehicleRequest';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +26,8 @@ MyLostVehicleRequestTableRow.propTypes = {
 
 export default function MyLostVehicleRequestTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const { plateNumber, vehicleType, location, createdAt, lastUpdatedAt, status } = row;
 
@@ -33,6 +39,18 @@ export default function MyLostVehicleRequestTableRow({ row, selected, onEditRow,
 
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
+  };
+
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      await axios.patch(`/api/v1/users/my-account/lost-vehicle-requests/${id}/status?status=${status}`);
+      dispatch(markLostVehicleRequestStatus({ id, status }));
+      enqueueSnackbar('Update status successfully', { variant: 'success' });
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('Update status failed', { variant: 'error' });
+    }
+    handleCloseMenu();
   };
 
   return (
@@ -78,16 +96,75 @@ export default function MyLostVehicleRequestTableRow({ row, selected, onEditRow,
           onClose={handleCloseMenu}
           actions={
             <>
-              <MenuItem
-                onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
-                }}
-                sx={{ color: 'error.main' }}
-              >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Abandon
-              </MenuItem>
+              {status === lostVehicleRequestStatusConstants.PROCESSING && (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.ABANDONED);
+                    }}
+                    sx={{ color: 'error.main' }}
+                  >
+                    <Iconify icon={'eva:trash-2-outline'} />
+                    Abandon
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.SUCCESS);
+                    }}
+                    sx={{ color: 'green' }}
+                  >
+                    <Iconify icon={'mdi:sucess-outline'} />
+                    Success
+                  </MenuItem>
+                </>
+              )}
+              {status === lostVehicleRequestStatusConstants.ABANDONED && (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.PROCESSING);
+                    }}
+                    sx={{ color: 'orange' }}
+                  >
+                    <Iconify icon={'mdi:sucess-outline'} />
+                    Re-open
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.SUCCESS);
+                    }}
+                    sx={{ color: 'green' }}
+                  >
+                    <Iconify icon={'mdi:sucess-outline'} />
+                    Success
+                  </MenuItem>
+                </>
+              )}
+
+              {status === lostVehicleRequestStatusConstants.SUCCESS && (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.ABANDONED);
+                    }}
+                    sx={{ color: 'error.main' }}
+                  >
+                    <Iconify icon={'eva:trash-2-outline'} />
+                    Abandon
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleUpdateStatus(row.id, lostVehicleRequestStatusConstants.PROCESSING);
+                    }}
+                    sx={{ color: 'orange' }}
+                  >
+                    <Iconify icon={'mdi:sucess-outline'} />
+                    Re-open
+                  </MenuItem>
+                </>
+              )}
+
               <MenuItem
                 onClick={() => {
                   onEditRow();

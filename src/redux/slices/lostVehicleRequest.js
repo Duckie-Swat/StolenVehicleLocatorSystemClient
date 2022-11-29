@@ -54,6 +54,17 @@ const slice = createSlice({
       state.totalPages = Math.ceil(state.totalItems / state.limit);
     },
 
+    markLostVehicleRequestStatus(state, action) {
+      state.isLoading = false;
+      const { id, status } = action.payload;
+      const lostVehicleRequestIndex = state.lostVehicleRequests.findIndex(
+        (lostVehicleRequest) => lostVehicleRequest.id === id
+      );
+      if (lostVehicleRequestIndex >= 0) {
+        state.lostVehicleRequests[lostVehicleRequestIndex].status = status;
+      }
+    },
+
     // Paginate
     setPage(state, action) {
       state.page = action.payload;
@@ -78,7 +89,15 @@ export default slice.reducer;
 
 // Actions
 
-export const { setPage, setLimit, setKeyword, setOrderDesc, setOrderProperty, setConnection } = slice.actions;
+export const {
+  setPage,
+  setLimit,
+  setKeyword,
+  setOrderDesc,
+  setOrderProperty,
+  setConnection,
+  markLostVehicleRequestStatus,
+} = slice.actions;
 
 export function getLostVehicleRequest(params) {
   return async () => {
@@ -93,6 +112,7 @@ export function getLostVehicleRequest(params) {
     }
   };
 }
+
 export function createPostVehicleRequest(params) {
   return async () => {
     dispatch(slice.actions.startLoading());
