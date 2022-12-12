@@ -4,7 +4,12 @@ import axios from '../../utils/axios';
 //
 import { dispatch } from '../store';
 
-import { LIST_PAGINATED_MY_NOTIFICATIONS_ENDPOINT } from '../../constants/apiEndpointConstants';
+import {
+  LIST_PAGINATED_MY_NOTIFICATIONS_ENDPOINT,
+  MARK_A_NOTIFICATION_AS_READ,
+  MARK_ALL_NOTIFICATIONS_AS_READ,
+  REMOVE_ALL_NOTIFICATIONS,
+} from '../../constants/apiEndpointConstants';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +24,7 @@ const initialState = {
   page: 1,
   limit: 5,
   keyword: '',
+  isDeleted: false,
   orderProperty: 'createdAt',
 };
 
@@ -48,6 +54,12 @@ const slice = createSlice({
       state.totalPages = action.payload.totalPages;
     },
 
+    // ADD NOTIFICATION
+    addNotificationSuccess(state, action) {
+      state.isLoading = false;
+      state.notifications = [action.payload, ...state.notifications];
+    },
+
     // Paginate
     setPage(state, action) {
       state.page = action.payload;
@@ -72,7 +84,8 @@ export default slice.reducer;
 
 // Actions
 
-export const { setPage, setLimit, setKeyword, setOrderDesc, setOrderProperty, setConnection } = slice.actions;
+export const { setPage, setLimit, setKeyword, setOrderDesc, setOrderProperty, setConnection, addNotificationSuccess } =
+  slice.actions;
 
 export function getNotifications(params) {
   return async () => {
@@ -82,6 +95,69 @@ export function getNotifications(params) {
         params,
       });
       dispatch(slice.actions.getNotificationsSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function markNotificationAsRead(notificationId) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.patch(MARK_A_NOTIFICATION_AS_READ.replace('<<id>>', notificationId));
+      dispatch(
+        getNotifications({
+          page: 1,
+          limit: 5,
+          keyword: '',
+          orderProperty: 'createdAt',
+          desc: true,
+          isDeleted: false,
+        })
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function markAllNotificationsAsRead() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.patch(MARK_ALL_NOTIFICATIONS_AS_READ);
+      dispatch(
+        getNotifications({
+          page: 1,
+          limit: 5,
+          keyword: '',
+          orderProperty: 'createdAt',
+          desc: true,
+          isDeleted: false,
+        })
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function removeAllNotifications() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await axios.delete(REMOVE_ALL_NOTIFICATIONS);
+      dispatch(
+        getNotifications({
+          page: 1,
+          limit: 5,
+          keyword: '',
+          orderProperty: 'createdAt',
+          desc: true,
+          isDeleted: false,
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

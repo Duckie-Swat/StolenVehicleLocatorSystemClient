@@ -26,20 +26,19 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
-import { getNotifications } from '../../../redux/slices/notification';
+import {
+  getNotifications,
+  markAllNotificationsAsRead,
+  markNotificationAsRead,
+  removeAllNotifications,
+} from '../../../redux/slices/notification';
 
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(_notifications);
+  // const [notifications, setNotifications] = useState(_notifications);
   const dispatch = useDispatch();
-  const {
-    notifications: notificationsList,
-    page,
-    limit,
-    orderProperty,
-    desc,
-  } = useSelector((state) => state.notification);
+  const { notifications, page, limit, orderProperty, desc, isDeleted } = useSelector((state) => state.notification);
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
@@ -53,12 +52,13 @@ export default function NotificationsPopover() {
   };
 
   const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
+    dispatch(markAllNotificationsAsRead());
+    handleClose();
+  };
+
+  const handleRemoveAllNotifications = () => {
+    dispatch(removeAllNotifications());
+    handleClose();
   };
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function NotificationsPopover() {
         limit,
         orderProperty,
         desc,
+        isDeleted,
       })
     );
   }, []);
@@ -95,11 +96,23 @@ export default function NotificationsPopover() {
           </Box>
 
           {totalUnRead > 0 && (
-            <Tooltip title=" Mark all as read">
-              <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
-                <Iconify icon="eva:done-all-fill" width={20} height={20} />
-              </IconButtonAnimate>
-            </Tooltip>
+            <>
+              <Tooltip title=" Mark all as read">
+                <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
+                  <Iconify icon="eva:done-all-fill" width={20} height={20} />
+                </IconButtonAnimate>
+              </Tooltip>
+            </>
+          )}
+
+          {notifications.length > 0 && (
+            <>
+              <Tooltip title="Remove all notifications">
+                <IconButtonAnimate color="error" onClick={handleRemoveAllNotifications}>
+                  <Iconify icon="mdi:alpha-x-circle" width={20} height={20} />
+                </IconButtonAnimate>
+              </Tooltip>
+            </>
           )}
         </Box>
 
@@ -117,8 +130,8 @@ export default function NotificationsPopover() {
             {/* {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))} */}
-            {notificationsList &&
-              notificationsList?.map((notification) => (
+            {notifications &&
+              notifications?.map((notification) => (
                 <NotificationItem key={notification.id} notification={notification} />
               ))}
           </List>
@@ -140,8 +153,22 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
-            View All
+          <Button
+            fullWidth
+            disableRipple
+            onClick={() => {
+              dispatch(
+                getNotifications({
+                  page,
+                  limit: limit + 5,
+                  orderProperty,
+                  desc,
+                  isDeleted,
+                })
+              );
+            }}
+          >
+            Load more
           </Button>
         </Box>
       </MenuPopover>
@@ -165,7 +192,7 @@ NotificationItem.propTypes = {
 
 function NotificationItem({ notification }) {
   const { avatar, title } = renderContent(notification);
-
+  const dispatch = useDispatch();
   return (
     <ListItemButton
       sx={{
@@ -178,6 +205,7 @@ function NotificationItem({ notification }) {
       }}
       onClick={() => {
         console.log(`click mask notification item::${notification.id}`);
+        dispatch(markNotificationAsRead(notification.id));
       }}
     >
       <ListItemAvatar>

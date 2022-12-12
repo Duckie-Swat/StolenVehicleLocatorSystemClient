@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
-import { setConnection } from './redux/slices/notification';
+import { setConnection, addNotificationSuccess } from './redux/slices/notification';
 import Router from './routes';
 
 // hooks
@@ -51,31 +51,18 @@ export default function App() {
     }
   }, [isAuthenticated, dispatch]);
 
-  // useEffect(() => {
-  //   // handle recv message from signalR server
-  //   const handleNotification = (message) => {
-  //     console.log(message);
-  //   };
-  //   notificationConnection?.on('SendNotification', handleNotification);
+  useEffect(() => {
+    // handle recv message from signalR server
+    const handleNotification = (message) => {
+      console.log(message);
+      dispatch(addNotificationSuccess(message));
+    };
+    notificationConnection?.on('SendNotification', handleNotification);
 
-  //   // This code used for demo. a notication  will have invoked (sent) to signalR server each 5 minute
-  //   const timer = setInterval(() => {
-  //     notificationConnection?.invoke('Send', {
-  //       To: 'customer@duckieswat.com',
-  //       Content: {
-  //         Title: 'This is notifacition sent from admin',
-  //         Description: 'hola',
-  //         Type: 0,
-  //       },
-  //     });
-  //   }, 60000 * 5);
-
-  //   return () => {
-  //     // Clear timer as well as connections to avoid memory leak
-  //     clearTimeout(timer);
-  //     notificationConnection?.off('SendMessage', notificationConnection);
-  //   };
-  // }, [notificationConnection]);
+    return () => {
+      notificationConnection?.off('SendNotification', notificationConnection);
+    };
+  }, [notificationConnection]);
 
   return (
     <ThemeProvider>

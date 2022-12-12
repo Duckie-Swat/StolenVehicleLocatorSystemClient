@@ -13,7 +13,7 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 // sections
 import { getCameraDetectResult } from '../../redux/slices/cameraDetectResult';
-import { MAPBOX_API } from '../../config';
+import { MAPBOX_API, MAPBOX_STYLE } from '../../config';
 import { AppMarkerList } from '../../sections/@dashboard/general/app';
 // ----------------------------------------------------------------------
 
@@ -39,6 +39,8 @@ export default function GeneralApp() {
     );
   }, [dispatch]);
 
+  console.log(MAPBOX_STYLE);
+
   return (
     <Page title="General: App">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -46,6 +48,7 @@ export default function GeneralApp() {
           {...viewport}
           mapboxApiAccessToken={MAPBOX_API}
           onViewportChange={(nextViewport) => setViewport(nextViewport)}
+          mapStyle={MAPBOX_STYLE}
         >
           <AppMarkerList cameraDetectResults={cameraDetectResults} />
         </ReactMapGL>
