@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
 import { setConnection, addNotificationSuccess } from './redux/slices/notification';
+import { getCameraDetectResult } from './redux/slices/cameraDetectResult';
 import Router from './routes';
 
 // hooks
@@ -26,6 +27,7 @@ export default function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth();
   const { connection: notificationConnection } = useSelector((state) => state.notification);
+  const { page, limit } = useSelector((state) => state.cameraDetectResult);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -56,6 +58,12 @@ export default function App() {
     const handleNotification = (message) => {
       console.log(message);
       dispatch(addNotificationSuccess(message));
+      dispatch(
+        getCameraDetectResult({
+          page,
+          limit,
+        })
+      );
     };
     notificationConnection?.on('SendNotification', handleNotification);
 
