@@ -57,7 +57,12 @@ const slice = createSlice({
     // ADD NOTIFICATION
     addNotificationSuccess(state, action) {
       state.isLoading = false;
-      state.notifications = [action.payload, ...state.notifications];
+
+      // If notification is already in the list dont add it
+      const isNotificationInList = state.notifications.some((notification) => notification.id === action.payload.id);
+      if (!isNotificationInList) {
+        state.notifications = [action.payload, ...state.notifications];
+      }
     },
 
     // Paginate

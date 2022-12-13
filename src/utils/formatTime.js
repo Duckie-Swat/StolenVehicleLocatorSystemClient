@@ -15,11 +15,11 @@ export function fTimestamp(date) {
 }
 
 export function fDateTimeSuffix(date) {
-  return format(new Date(date), 'dd/MM/yyyy hh:mm p');
+  return new Date(date).toISOString().slice(0, 19).replace(/-/g, '/').replace('T', ' ');
 }
 
 export function fToNow(date) {
   return formatDistanceToNow(new Date(date), {
-    addSuffix: true
+    addSuffix: true,
   });
 }
