@@ -15,7 +15,7 @@ export function fTimestamp(date) {
 }
 
 export function fDateTimeSuffix(date) {
-  return new Date(date).toISOString().slice(0, 19).replace(/-/g, '/').replace('T', ' ');
+  return format(new Date(date), 'dd/MM/yyyy hh:mm:ss');
 }
 
 export function fToNow(date) {
