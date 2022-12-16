@@ -1,31 +1,30 @@
-import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 // @mui
 import {
-  Box,
-  List,
-  Badge,
-  Button,
   Avatar,
-  Tooltip,
+  Badge,
+  Box,
+  Button,
   Divider,
-  Typography,
-  ListItemText,
-  ListSubheader,
+  List,
   ListItemAvatar,
   ListItemButton,
+  ListItemText,
+  ListSubheader,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // _mock_
-import { _notifications } from '../../../_mock';
 // components
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from '../../../components/Iconify';
+import MenuPopover from '../../../components/MenuPopover';
+import Scrollbar from '../../../components/Scrollbar';
 import {
   getNotifications,
   markAllNotificationsAsRead,

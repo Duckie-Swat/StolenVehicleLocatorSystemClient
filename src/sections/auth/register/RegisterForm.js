@@ -106,8 +106,9 @@ export default function RegisterForm() {
           variant="contained"
           loading={isSubmitting}
           onClick={() => {
-            if (captchaRef.current.getValue() === '') alert('Please verify that you are not a robot');
-            else return handleSubmit(onSubmit);
+            if (captchaRef.current.getValue() === '') {
+              alert('Please verify that you are not a robot');
+            } else return handleSubmit(onSubmit);
           }}
         >
           Register

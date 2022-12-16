@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
 import { useSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 // form
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 // @mui
 import { LoadingButton } from '@mui/lab';
 
@@ -15,13 +15,12 @@ import { Box, Card, Grid, Stack } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
 // components
-import Label from '../../../components/Label';
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
-import axios from '../../../utils/axios';
 import { LOST_VEHICLE_REQUEST_ENDPOINT } from '../../../constants/apiEndpointConstants';
 import locationConstants from '../../../constants/locationConstants';
 import vehicleTypeConstants from '../../../constants/vehicleTypeConstants';
 import useAuth from '../../../hooks/useAuth';
+import axios from '../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -63,8 +62,6 @@ export default function MyLostVehicleRequestNewEditForm({ isEdit, currentMyLostV
   const {
     reset,
     watch,
-    control,
-    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;

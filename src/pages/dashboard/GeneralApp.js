@@ -37,7 +37,7 @@ export default function GeneralApp() {
         limit,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, page, limit]);
 
   console.log(MAPBOX_STYLE);
 

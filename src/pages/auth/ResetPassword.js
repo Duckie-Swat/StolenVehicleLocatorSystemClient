@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
@@ -29,8 +29,6 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
-
-  const onSent = async () => {};
 
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>

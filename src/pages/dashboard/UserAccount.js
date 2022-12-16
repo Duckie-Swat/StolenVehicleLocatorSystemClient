@@ -6,20 +6,12 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
-// _mock_
-import { _userPayment, _userAddressBook, _userInvoices, _userAbout } from '../../_mock';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
-import {
-  AccountGeneral,
-  AccountBilling,
-  AccountSocialLinks,
-  AccountNotifications,
-  AccountChangePassword,
-} from '../../sections/@dashboard/camera/account';
+import { AccountGeneral, AccountNotifications, AccountChangePassword } from '../../sections/@dashboard/camera/account';
 
 // ----------------------------------------------------------------------
 

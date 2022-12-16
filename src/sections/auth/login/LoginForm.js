@@ -1,12 +1,12 @@
-import * as Yup from 'yup';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import * as Yup from 'yup';
 // form
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 // @mui
-import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { Alert, IconButton, InputAdornment, Link, Stack } from '@mui/material';
 import ReCaptcha from 'react-google-recaptcha';
 
 // routes
@@ -15,8 +15,8 @@ import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
+import { FormProvider, RHFTextField } from '../../../components/hook-form';
 import Iconify from '../../../components/Iconify';
-import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 import { GOOGLE_RECAPTCHA_SITE_KEY } from '../../../config';
 // ----------------------------------------------------------------------
 

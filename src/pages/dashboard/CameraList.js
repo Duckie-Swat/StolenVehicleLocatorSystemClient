@@ -1,44 +1,41 @@
 import { paramCase } from 'change-case';
 import { debounce } from 'lodash';
-import { useEffect, useState, useCallback } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import {
   Box,
-  Tab,
-  Tabs,
-  Card,
-  Table,
-  Switch,
   Button,
-  Tooltip,
-  Divider,
-  TableBody,
+  Card,
   Container,
+  Divider,
+  FormControlLabel,
   IconButton,
+  Switch,
+  Table,
+  TableBody,
   TableContainer,
   TablePagination,
-  FormControlLabel,
+  Tooltip,
 } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
-import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
+import useTable, { emptyRows } from '../../hooks/useTable';
+import useTabs from '../../hooks/useTabs';
 // _mock_
-import { _userList } from '../../_mock';
 // components
-import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
+import Iconify from '../../components/Iconify';
+import Page from '../../components/Page';
+import Scrollbar from '../../components/Scrollbar';
+import { TableEmptyRows, TableHeadCustom, TableSelectedActions } from '../../components/table';
 // sections
-import { CameraTableToolbar, CameraTableRow } from '../../sections/@dashboard/camera/list';
+import { CameraTableRow, CameraTableToolbar } from '../../sections/@dashboard/camera/list';
 // ----------------------------------------------------------------------
-import { getCameras, setPage, setLimit, setKeyword, setOrderDesc, setOrderProperty } from '../../redux/slices/camera';
+import { getCameras, setKeyword, setLimit, setOrderDesc, setOrderProperty, setPage } from '../../redux/slices/camera';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
@@ -73,8 +70,6 @@ export default function CameraList() {
   const [tableData, setTableData] = useState([]);
 
   const [filterRole, setFilterRole] = useState('all');
-
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
   const onSort = (id) => {
     const isAsc = orderProperty === id && desc === false;
@@ -144,7 +139,7 @@ export default function CameraList() {
         desc,
       })
     );
-  }, [dispatch, limit, page, orderProperty, desc]);
+  }, [dispatch, keyword, limit, page, orderProperty, desc]);
 
   useEffect(() => {
     if (cameras) {
