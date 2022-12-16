@@ -90,10 +90,10 @@ export default function MyLostVehicleRequestNewEditForm({ isEdit, currentMyLostV
             longitude: position.coords.longitude,
           });
           reset();
-          enqueueSnackbar(!isEdit ? 'Request created success!' : 'Update success!');
-          navigate(PATH_DASHBOARD.camera.list);
+          enqueueSnackbar(!isEdit ? 'Your request is created success!' : 'Update success!');
+          navigate(PATH_DASHBOARD.myLostVehicles.list);
         } catch (error) {
-          enqueueSnackbar(!isEdit ? 'Request created fail!' : 'Update fail!', { variant: 'error' });
+          enqueueSnackbar(!isEdit ? 'Something went wrong ' : 'Update fail!', { variant: 'error' });
         }
       });
     } else {
