@@ -22,7 +22,7 @@ import {
   ProfileFriends,
   ProfileGallery,
   ProfileFollowers,
-} from '../../sections/@dashboard/user/profile';
+} from '../../sections/@dashboard/camera/profile';
 
 // ----------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ export default function UserProfile() {
           heading="Profile"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
+            { name: 'User', href: PATH_DASHBOARD.camera.root },
             { name: user?.displayName || '' },
           ]}
         />

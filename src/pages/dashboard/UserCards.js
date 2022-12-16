@@ -10,7 +10,7 @@ import { _userCards } from '../../_mock';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
-import { UserCard } from '../../sections/@dashboard/user/cards';
+import { UserCard } from '../../sections/@dashboard/camera/cards';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ export default function UserCards() {
           heading="User Cards"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
+            { name: 'User', href: PATH_DASHBOARD.camera.root },
             { name: 'Cards' },
           ]}
         />

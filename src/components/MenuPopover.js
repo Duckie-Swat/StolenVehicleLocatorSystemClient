@@ -98,7 +98,7 @@ export default function MenuPopover({ children, arrow = 'top-right', disabledArr
         sx: {
           p: 1,
           width: 200,
-          overflow: 'inherit',
+          overflow: 'scroll',
           ...sx,
         },
       }}

@@ -28,7 +28,8 @@ export const AUTH0_API = {
 };
 
 export const MAPBOX_API = process.env.REACT_APP_MAPBOX;
-
+export const MAPBOX_STYLE = process.env.REACT_APP_MAPBOX_STYLE;
+export const GOOGLE_RECAPTCHA_SITE_KEY = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app; // as '/dashboard/app'

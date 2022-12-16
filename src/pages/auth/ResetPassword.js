@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes

@@ -1,36 +1,43 @@
-import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 // @mui
 import {
-  Box,
-  List,
-  Badge,
-  Button,
   Avatar,
-  Tooltip,
+  Badge,
+  Box,
+  Button,
   Divider,
-  Typography,
-  ListItemText,
-  ListSubheader,
+  List,
   ListItemAvatar,
   ListItemButton,
+  ListItemText,
+  ListSubheader,
+  Tooltip,
+  Typography,
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // _mock_
-import { _notifications } from '../../../_mock';
 // components
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from '../../../components/Iconify';
+import MenuPopover from '../../../components/MenuPopover';
+import Scrollbar from '../../../components/Scrollbar';
+import {
+  getNotifications,
+  markAllNotificationsAsRead,
+  markNotificationAsRead,
+  removeAllNotifications,
+} from '../../../redux/slices/notification';
 
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(_notifications);
-
+  // const [notifications, setNotifications] = useState(_notifications);
+  const dispatch = useDispatch();
+  const { notifications, page, limit, orderProperty, desc, isDeleted } = useSelector((state) => state.notification);
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
@@ -44,13 +51,26 @@ export default function NotificationsPopover() {
   };
 
   const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
+    dispatch(markAllNotificationsAsRead());
+    handleClose();
   };
+
+  const handleRemoveAllNotifications = () => {
+    dispatch(removeAllNotifications());
+    handleClose();
+  };
+
+  useEffect(() => {
+    dispatch(
+      getNotifications({
+        page,
+        limit,
+        orderProperty,
+        desc,
+        isDeleted,
+      })
+    );
+  }, []);
 
   return (
     <>
@@ -75,11 +95,23 @@ export default function NotificationsPopover() {
           </Box>
 
           {totalUnRead > 0 && (
-            <Tooltip title=" Mark all as read">
-              <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
-                <Iconify icon="eva:done-all-fill" width={20} height={20} />
-              </IconButtonAnimate>
-            </Tooltip>
+            <>
+              <Tooltip title=" Mark all as read">
+                <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
+                  <Iconify icon="eva:done-all-fill" width={20} height={20} />
+                </IconButtonAnimate>
+              </Tooltip>
+            </>
+          )}
+
+          {notifications.length > 0 && (
+            <>
+              <Tooltip title="Remove all notifications">
+                <IconButtonAnimate color="error" onClick={handleRemoveAllNotifications}>
+                  <Iconify icon="mdi:alpha-x-circle" width={20} height={20} />
+                </IconButtonAnimate>
+              </Tooltip>
+            </>
           )}
         </Box>
 
@@ -94,12 +126,16 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
+            {/* {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
-            ))}
+            ))} */}
+            {notifications &&
+              notifications?.map((notification) => (
+                <NotificationItem key={notification.id} notification={notification} />
+              ))}
           </List>
 
-          <List
+          {/* <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
@@ -110,14 +146,28 @@ export default function NotificationsPopover() {
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
-            View All
+          <Button
+            fullWidth
+            disableRipple
+            onClick={() => {
+              dispatch(
+                getNotifications({
+                  page,
+                  limit: limit + 5,
+                  orderProperty,
+                  desc,
+                  isDeleted,
+                })
+              );
+            }}
+          >
+            Load more
           </Button>
         </Box>
       </MenuPopover>
@@ -129,19 +179,19 @@ export default function NotificationsPopover() {
 
 NotificationItem.propTypes = {
   notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
+    createdAt: PropTypes.string,
     id: PropTypes.string,
     isUnRead: PropTypes.bool,
     title: PropTypes.string,
     description: PropTypes.string,
-    type: PropTypes.string,
+    type: PropTypes.number,
     avatar: PropTypes.any,
   }),
 };
 
 function NotificationItem({ notification }) {
   const { avatar, title } = renderContent(notification);
-
+  const dispatch = useDispatch();
   return (
     <ListItemButton
       sx={{
@@ -151,6 +201,10 @@ function NotificationItem({ notification }) {
         ...(notification.isUnRead && {
           bgcolor: 'action.selected',
         }),
+      }}
+      onClick={() => {
+        console.log(`click mask notification item::${notification.id}`);
+        dispatch(markNotificationAsRead(notification.id));
       }}
     >
       <ListItemAvatar>

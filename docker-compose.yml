@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  stolenvehiclelocatorsystemclient:
+    build: .
+    ports:
+      - "3000:80"
+    container_name: stolenvehiclelocatorsystemclient
+    env_file:
+      - .env.production

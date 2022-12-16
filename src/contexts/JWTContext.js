@@ -5,6 +5,12 @@ import axios from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
 
 // ----------------------------------------------------------------------
+import {
+  LOGIN_ENDPOINT,
+  MY_PROFILE_ENDPOINT,
+  LOGOUT_ENDPOINT,
+  REGISTER_ENDPOINT,
+} from '../constants/apiEndpointConstants';
 
 const initialState = {
   isAuthenticated: false,
@@ -74,7 +80,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
+          const response = await axios.get(MY_PROFILE_ENDPOINT);
           const { user } = response.data;
 
           dispatch({
@@ -108,14 +114,15 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+  const login = async (email, password, token) => {
+    const response = await axios.post(LOGIN_ENDPOINT, {
       email,
       password,
+      responseCaptchaToken: token,
     });
-    const { accessToken, user } = response.data;
-
+    const { accessToken, user, refreshToken } = response.data;
     setSession(accessToken);
+    window.localStorage.setItem('refreshToken', refreshToken);
     dispatch({
       type: 'LOGIN',
       payload: {
@@ -124,16 +131,17 @@ function AuthProvider({ children }) {
     });
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+  const register = async (email, password, firstName, lastName, token) => {
+    const response = await axios.post(REGISTER_ENDPOINT, {
       email,
       password,
       firstName,
       lastName,
+      responseCaptchaToken: token,
     });
-    const { accessToken, user } = response.data;
-
-    window.localStorage.setItem('accessToken', accessToken);
+    const { accessToken, user, refreshToken } = response.data;
+    setSession(accessToken);
+    window.localStorage.setItem('refreshToken', refreshToken);
     dispatch({
       type: 'REGISTER',
       payload: {
@@ -143,7 +151,13 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    await axios.post(LOGOUT_ENDPOINT, null, {
+      params: {
+        refreshToken: window.localStorage.getItem('refreshToken'),
+      },
+    });
     setSession(null);
+    window.localStorage.removeItem('refreshToken');
     dispatch({ type: 'LOGOUT' });
   };
 
