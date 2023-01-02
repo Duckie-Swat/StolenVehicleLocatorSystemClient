@@ -59,5 +59,9 @@ const locationConstants = [
     name: 'Quận Gò Vấp',
     label: 'Quận Gò Vấp',
   },
+  {
+    name: 'Quận Thủ Đức',
+    label: 'Quận Thủ Đức',
+  },
 ];
 export default locationConstants;
